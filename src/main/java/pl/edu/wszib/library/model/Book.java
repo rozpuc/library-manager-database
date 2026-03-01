@@ -1,14 +1,12 @@
 package pl.edu.wszib.library.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-@Builder
 public class Book {
     private int id;
     private String title;
@@ -16,4 +14,10 @@ public class Book {
     private String isbn;
     private int releaseYear;
     private boolean rent;
+
+    @Override
+    public String toString() {
+        return String.format("[%d] \"%s\" - %s (%d) | ISBN: %s | %s",
+                id, title, author, releaseYear, isbn, rent ? "WYPOŻYCZONA" : "DOSTĘPNA");
+    }
 }

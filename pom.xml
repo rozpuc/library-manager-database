@@ -54,7 +54,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>pl.edu.wszib.library.LibraryApplication</mainClass>
+                            <mainClass>pl.edu.wszib.library.App</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

@@ -8,11 +8,9 @@ Konsolowa aplikacja Java do zarządzania biblioteką, z podziałem na role użyt
 - Logowanie / wylogowanie
 - Przeglądanie listy książek
 - Wyszukiwanie książek po autorze lub tytule
-- Wypożyczanie i zwracanie książek
-- Rezerwowanie książek
 
 ### Administrator (ADMIN)
-- Wszystkie funkcje użytkownika
+- Logowanie / wylogowanie
 - Dodawanie nowej książki
 - Usuwanie książki
 - Edytowanie istniejącej książki
@@ -23,5 +21,5 @@ Konsolowa aplikacja Java do zarządzania biblioteką, z podziałem na role użyt
 
 | Login   | Hasło   | Rola  |
 |---------|---------|-------|
-| `admin` | `admin` | ADMIN |
-| `user`  | `user`  | USER  |
+| `admin` | `admin123` | ADMIN |
+| `user`  | `user123`  | USER  |
