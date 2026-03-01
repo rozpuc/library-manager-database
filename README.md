@@ -15,8 +15,6 @@ Konsolowa aplikacja Java do zarządzania biblioteką, z podziałem na role użyt
 - Usuwanie książki
 - Edytowanie istniejącej książki
 
-## Technologie
-
 ## Domyślne konta
 
 | Login   | Hasło   | Rola  |
