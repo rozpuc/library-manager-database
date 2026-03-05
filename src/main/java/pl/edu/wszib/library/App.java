@@ -1,6 +1,7 @@
 package pl.edu.wszib.library;
 
 import pl.edu.wszib.library.authentication.Authenticator;
+import pl.edu.wszib.library.config.DatabaseInitializer;
 import pl.edu.wszib.library.database.BookRepository;
 import pl.edu.wszib.library.database.InMemoryBookRepository;
 import pl.edu.wszib.library.database.InMemoryUserRepository;
@@ -14,6 +15,7 @@ import pl.edu.wszib.library.model.Role;
 public class App {
 
     public static void main(String[] args) {
+        DatabaseInitializer.initialize();
         UserRepository userRepository = new InMemoryUserRepository();
         BookRepository bookRepository = new InMemoryBookRepository();
         Authenticator authenticator = new Authenticator(userRepository);

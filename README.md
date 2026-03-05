@@ -1,4 +1,4 @@
-# Terminalowy Menedżer Biblioteki
+# Terminalowy Menedżer Biblioteki z Bazą Danych
 
 Konsolowa aplikacja Java do zarządzania biblioteką, z podziałem na role użytkowników (ADMIN / USER).
 
