@@ -3,7 +3,9 @@ package pl.edu.wszib.library;
 import pl.edu.wszib.library.authentication.Authenticator;
 import pl.edu.wszib.library.config.DatabaseInitializer;
 import pl.edu.wszib.library.database.BookRepository;
+import pl.edu.wszib.library.database.BorrowingRepository;
 import pl.edu.wszib.library.database.JdbcBookRepository;
+import pl.edu.wszib.library.database.JdbcBorrowingRepository;
 import pl.edu.wszib.library.database.JdbcUserRepository;
 import pl.edu.wszib.library.database.UserRepository;
 import pl.edu.wszib.library.exceptions.BookNotFoundException;
@@ -19,12 +21,12 @@ public class App {
 
         UserRepository userRepository = new JdbcUserRepository();
         BookRepository bookRepository = new JdbcBookRepository();
+        BorrowingRepository borrowingRepository = new JdbcBorrowingRepository();
         Authenticator authenticator = new Authenticator(userRepository);
         GUI gui = new GUI();
 
         System.out.println("Terminalowy Menedzer Biblioteki");
 
-        // Login
         User credentials = gui.readLoginAndPassword();
         User loggedUser = authenticator.authenticate(credentials.getUsername(), credentials.getPassword());
 
@@ -38,13 +40,13 @@ public class App {
         if (loggedUser.getRole() == Role.ADMIN) {
             runAdminMenu(gui, bookRepository);
         } else {
-            runUserMenu(gui, bookRepository);
+            runUserMenu(gui, bookRepository, borrowingRepository, loggedUser);
         }
 
         gui.showMessage("Do zobaczenia!");
     }
 
-    private static void runUserMenu(GUI gui, BookRepository bookRepository) {
+    private static void runUserMenu(GUI gui, BookRepository bookRepository, BorrowingRepository borrowingRepository, User loggedUser) {
         boolean running = true;
         while (running) {
             String choice = gui.showUserMenuAndReadChoice();
@@ -59,6 +61,32 @@ public class App {
                     gui.displayBooks(bookRepository.findByAuthor(gui.readSearchQuery("autora")));
                     break;
                 case "4":
+                    try {
+                        gui.displayBooks(bookRepository.getAll());
+                        int bookId = gui.readBookId();
+                       if (borrowingRepository.borrow(loggedUser.getId(), bookId)) {
+                           gui.showMessage("Książka wypożyczona pomyślnie.");
+                       } else {
+                           gui.showMessage("Książka jest niedostępna.");
+                       }
+                    } catch (NumberFormatException e) {
+                        gui.showMessage("Nieprawidłowe ID.");
+                    }
+                    break;
+                case "5":
+                    try {
+                        gui.displayBorrowings(borrowingRepository.getActiveBorrowingsByUser(loggedUser.getId()));
+                        int borrowingId = gui.readBorrowingId();
+                        borrowingRepository.returnBook(borrowingId);
+                        gui.showMessage("Książka zwrócona pomyślnie.");
+                    } catch (NumberFormatException e) {
+                        gui.showMessage("Nieprawidłowe ID.");
+                    }
+                    break;
+                case "6":
+                    gui.displayBorrowings(borrowingRepository.getActiveBorrowingsByUser(loggedUser.getId()));
+                    break;
+                case "7":
                     running = false;
                     break;
                 default:

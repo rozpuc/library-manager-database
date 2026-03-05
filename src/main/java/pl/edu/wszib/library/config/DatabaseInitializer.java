@@ -75,12 +75,14 @@ public class DatabaseInitializer {
 
         String adminPassword = BCrypt.hashpw("admin123", BCrypt.gensalt());
         String userPassword = BCrypt.hashpw("user123", BCrypt.gensalt());
+        String user2Password = BCrypt.hashpw("user2123", BCrypt.gensalt());
 
         stmt.execute(String.format("""
             INSERT INTO users (username, password, role) VALUES
             ('admin', '%s', 'ADMIN'),
-            ('user', '%s', 'USER')
-        """, adminPassword, userPassword));
+            ('user', '%s', 'USER'),
+            ('user2', '%s', 'USER')
+        """, adminPassword, userPassword, user2Password));
 
         stmt.execute("""
             INSERT INTO categories (name) VALUES

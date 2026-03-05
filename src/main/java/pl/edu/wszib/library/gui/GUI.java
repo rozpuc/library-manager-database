@@ -1,6 +1,7 @@
 package pl.edu.wszib.library.gui;
 
 import pl.edu.wszib.library.model.Book;
+import pl.edu.wszib.library.model.Borrowing;
 import pl.edu.wszib.library.model.User;
 
 import java.util.List;
@@ -19,11 +20,14 @@ public class GUI {
     }
 
     public String showUserMenuAndReadChoice() {
-        System.out.println("\nMENU UŹYTKOWNIKA");
+        System.out.println("\nMENU UŻYTKOWNIKA");
         System.out.println("1. Przeglądaj wszystkie książki");
         System.out.println("2. Szukaj po tytule");
         System.out.println("3. Szukaj po autorze");
-        System.out.println("4. Wyloguj");
+        System.out.println("4. Wypożycz książkę");
+        System.out.println("5. Zwróć książkę");
+        System.out.println("6. Moje wypożyczenia");
+        System.out.println("7. Wyloguj");
         System.out.print("Wybierz opcje: ");
         return scanner.nextLine();
     }
@@ -88,7 +92,7 @@ public class GUI {
             System.out.println("Nie znaleziono zadnych ksiazek.");
             return;
         }
-        System.out.println("\n--- Lista ksiazek (" + books.size() + ") ---");
+        System.out.println("\nLista ksiazek (" + books.size() + ")");
         for (Book book : books) {
             System.out.println(book);
         }
@@ -100,5 +104,21 @@ public class GUI {
 
     public void showWrongOptionMessage() {
         System.out.println("Nieprawidlowa opcja. Sprobuj ponownie.");
+    }
+
+    public void displayBorrowings(List<Borrowing> borrowings) {
+        if (borrowings.isEmpty()) {
+            System.out.println("Brak aktywnych wypożyczeń.");
+            return;
+        }
+        System.out.println("\n Twoje wypożyczenia (" + borrowings.size() + ")");
+        for (Borrowing b : borrowings) {
+            System.out.println(b);
+        }
+    }
+
+    public int readBorrowingId() {
+        System.out.print("Podaj ID wypożyczenia: ");
+        return Integer.parseInt(scanner.nextLine());
     }
 }

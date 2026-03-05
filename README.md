@@ -21,3 +21,4 @@ Konsolowa aplikacja Java do zarządzania biblioteką, z podziałem na role użyt
 |---------|---------|-------|
 | `admin` | `admin123` | ADMIN |
 | `user`  | `user123`  | USER  |
+| `user2`  | `user2123`  | USER  |S
