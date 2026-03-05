@@ -4,14 +4,17 @@ import pl.edu.wszib.library.authentication.Authenticator;
 import pl.edu.wszib.library.config.DatabaseInitializer;
 import pl.edu.wszib.library.database.BookRepository;
 import pl.edu.wszib.library.database.BorrowingRepository;
+import pl.edu.wszib.library.database.CategoryRepository;
 import pl.edu.wszib.library.database.JdbcBookRepository;
 import pl.edu.wszib.library.database.JdbcBorrowingRepository;
+import pl.edu.wszib.library.database.JdbcCategoryRepository;
 import pl.edu.wszib.library.database.JdbcUserRepository;
 import pl.edu.wszib.library.database.UserRepository;
 import pl.edu.wszib.library.exceptions.BookNotFoundException;
 import pl.edu.wszib.library.gui.GUI;
 import pl.edu.wszib.library.model.User;
 import pl.edu.wszib.library.model.Book;
+import pl.edu.wszib.library.model.Category;
 import pl.edu.wszib.library.model.Role;
 
 public class App {
@@ -22,6 +25,7 @@ public class App {
         UserRepository userRepository = new JdbcUserRepository();
         BookRepository bookRepository = new JdbcBookRepository();
         BorrowingRepository borrowingRepository = new JdbcBorrowingRepository();
+        CategoryRepository categoryRepository = new JdbcCategoryRepository();
         Authenticator authenticator = new Authenticator(userRepository);
         GUI gui = new GUI();
 
@@ -38,15 +42,17 @@ public class App {
         gui.showMessage("Zalogowano jako: " + loggedUser.getUsername() + " [" + loggedUser.getRole() + "]");
 
         if (loggedUser.getRole() == Role.ADMIN) {
-            runAdminMenu(gui, bookRepository);
+            runAdminMenu(gui, bookRepository, categoryRepository);
         } else {
-            runUserMenu(gui, bookRepository, borrowingRepository, loggedUser);
+            runUserMenu(gui, bookRepository, borrowingRepository, categoryRepository, loggedUser);
         }
 
         gui.showMessage("Do zobaczenia!");
     }
 
-    private static void runUserMenu(GUI gui, BookRepository bookRepository, BorrowingRepository borrowingRepository, User loggedUser) {
+    private static void runUserMenu(GUI gui, BookRepository bookRepository,
+                                    BorrowingRepository borrowingRepository,
+                                    CategoryRepository categoryRepository, User loggedUser) {
         boolean running = true;
         while (running) {
             String choice = gui.showUserMenuAndReadChoice();
@@ -62,18 +68,27 @@ public class App {
                     break;
                 case "4":
                     try {
-                        gui.displayBooks(bookRepository.getAll());
-                        int bookId = gui.readBookId();
-                       if (borrowingRepository.borrow(loggedUser.getId(), bookId)) {
-                           gui.showMessage("Książka wypożyczona pomyślnie.");
-                       } else {
-                           gui.showMessage("Książka jest niedostępna.");
-                       }
+                        gui.displayCategories(categoryRepository.getAll());
+                        int categoryId = gui.readCategoryId();
+                        gui.displayBooks(bookRepository.findByCategory(categoryId));
                     } catch (NumberFormatException e) {
                         gui.showMessage("Nieprawidłowe ID.");
                     }
                     break;
                 case "5":
+                    try {
+                        gui.displayBooks(bookRepository.getAll());
+                        int bookId = gui.readBookId();
+                        if (borrowingRepository.borrow(loggedUser.getId(), bookId)) {
+                            gui.showMessage("Książka wypożyczona pomyślnie.");
+                        } else {
+                            gui.showMessage("Książka jest niedostępna.");
+                        }
+                    } catch (NumberFormatException e) {
+                        gui.showMessage("Nieprawidłowe ID.");
+                    }
+                    break;
+                case "6":
                     try {
                         gui.displayBorrowings(borrowingRepository.getActiveBorrowingsByUser(loggedUser.getId()));
                         int borrowingId = gui.readBorrowingId();
@@ -83,10 +98,10 @@ public class App {
                         gui.showMessage("Nieprawidłowe ID.");
                     }
                     break;
-                case "6":
+                case "7":
                     gui.displayBorrowings(borrowingRepository.getActiveBorrowingsByUser(loggedUser.getId()));
                     break;
-                case "7":
+                case "8":
                     running = false;
                     break;
                 default:
@@ -95,7 +110,8 @@ public class App {
         }
     }
 
-    private static void runAdminMenu(GUI gui, BookRepository bookRepository) {
+    private static void runAdminMenu(GUI gui, BookRepository bookRepository,
+                                     CategoryRepository categoryRepository) {
         boolean running = true;
         while (running) {
             String choice = gui.showAdminMenuAndReadChoice();
@@ -135,6 +151,40 @@ public class App {
                     }
                     break;
                 case "5":
+                    runCategoryMenu(gui, categoryRepository);
+                    break;
+                case "6":
+                    running = false;
+                    break;
+                default:
+                    gui.showWrongOptionMessage();
+            }
+        }
+    }
+
+    private static void runCategoryMenu(GUI gui, CategoryRepository categoryRepository) {
+        boolean running = true;
+        while (running) {
+            String choice = gui.showCategoryMenuAndReadChoice();
+            switch (choice) {
+                case "1":
+                    gui.displayCategories(categoryRepository.getAll());
+                    break;
+                case "2":
+                    Category newCategory = new Category(0, gui.readCategoryName());
+                    categoryRepository.save(newCategory);
+                    gui.showMessage("Kategoria dodana pomyślnie.");
+                    break;
+                case "3":
+                    try {
+                        gui.displayCategories(categoryRepository.getAll());
+                        categoryRepository.deleteById(gui.readCategoryId());
+                        gui.showMessage("Kategoria usunięta pomyślnie.");
+                    } catch (NumberFormatException e) {
+                        gui.showMessage("Nieprawidłowe ID.");
+                    }
+                    break;
+                case "4":
                     running = false;
                     break;
                 default:

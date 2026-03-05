@@ -86,12 +86,12 @@ public class DatabaseInitializer {
 
         stmt.execute("""
             INSERT INTO categories (name) VALUES
-            ('Fantasy'),
-            ('Science Fiction'),
-            ('Klasyka'),
             ('Dystopia'),
+            ('Fantasy'),
+            ('Klasyka'),
             ('Kryminał'),
-            ('Literatura dziecięca')
+            ('Literatura dziecięca'),
+            ('Science Fiction')
         """);
 
         stmt.execute("""

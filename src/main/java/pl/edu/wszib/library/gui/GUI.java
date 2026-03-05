@@ -2,6 +2,7 @@ package pl.edu.wszib.library.gui;
 
 import pl.edu.wszib.library.model.Book;
 import pl.edu.wszib.library.model.Borrowing;
+import pl.edu.wszib.library.model.Category;
 import pl.edu.wszib.library.model.User;
 
 import java.util.List;
@@ -24,10 +25,11 @@ public class GUI {
         System.out.println("1. Przeglądaj wszystkie książki");
         System.out.println("2. Szukaj po tytule");
         System.out.println("3. Szukaj po autorze");
-        System.out.println("4. Wypożycz książkę");
-        System.out.println("5. Zwróć książkę");
-        System.out.println("6. Moje wypożyczenia");
-        System.out.println("7. Wyloguj");
+        System.out.println("4. Filtruj po kategorii");
+        System.out.println("5. Wypożycz książkę");
+        System.out.println("6. Zwróć książkę");
+        System.out.println("7. Moje wypożyczenia");
+        System.out.println("8. Wyloguj");
         System.out.print("Wybierz opcje: ");
         return scanner.nextLine();
     }
@@ -35,10 +37,11 @@ public class GUI {
     public String showAdminMenuAndReadChoice() {
         System.out.println("\nMENU ADMINISTRATORA");
         System.out.println("1. Przeglądaj wszystkie ksiązki");
-        System.out.println("2. Dodaj ksiazke");
-        System.out.println("3. Usun ksiazke");
-        System.out.println("4. Edytuj ksiazke");
-        System.out.println("5. Wyloguj");
+        System.out.println("2. Dodaj książkę");
+        System.out.println("3. Usuń książkę");
+        System.out.println("4. Edytuj książkę");
+        System.out.println("5. Zarządzaj kategoriami");
+        System.out.println("6. Wyloguj");
         System.out.print("Wybierz opcje: ");
         return scanner.nextLine();
     }
@@ -92,7 +95,7 @@ public class GUI {
             System.out.println("Nie znaleziono zadnych ksiazek.");
             return;
         }
-        System.out.println("\nLista ksiazek (" + books.size() + ")");
+        System.out.println("\n--- Lista ksiazek (" + books.size() + ") ---");
         for (Book book : books) {
             System.out.println(book);
         }
@@ -111,7 +114,7 @@ public class GUI {
             System.out.println("Brak aktywnych wypożyczeń.");
             return;
         }
-        System.out.println("\n Twoje wypożyczenia (" + borrowings.size() + ")");
+        System.out.println("\nTwoje wypożyczenia (" + borrowings.size() + ")");
         for (Borrowing b : borrowings) {
             System.out.println(b);
         }
@@ -119,6 +122,37 @@ public class GUI {
 
     public int readBorrowingId() {
         System.out.print("Podaj ID wypożyczenia: ");
+        return Integer.parseInt(scanner.nextLine());
+    }
+
+    public void displayCategories(List<Category> categories) {
+        if (categories.isEmpty()) {
+            System.out.println("Brak kategorii.");
+            return;
+        }
+        System.out.println("\nKategorie (" + categories.size() + ")");
+        for (Category c : categories) {
+            System.out.println(c);
+        }
+    }
+
+    public String showCategoryMenuAndReadChoice() {
+        System.out.println("\nZARZĄDZANIE KATEGORIAMI");
+        System.out.println("1. Lista kategorii");
+        System.out.println("2. Dodaj kategorię");
+        System.out.println("3. Usuń kategorię");
+        System.out.println("4. Powrót");
+        System.out.print("Wybierz opcje: ");
+        return scanner.nextLine();
+    }
+
+    public String readCategoryName() {
+        System.out.print("Nazwa kategorii: ");
+        return scanner.nextLine();
+    }
+
+    public int readCategoryId() {
+        System.out.print("Podaj ID kategorii: ");
         return Integer.parseInt(scanner.nextLine());
     }
 }

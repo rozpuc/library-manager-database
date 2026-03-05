@@ -63,6 +63,24 @@ public class JdbcBookRepository implements BookRepository {
     }
 
     @Override
+    public List<Book> findByCategory(int categoryId) {
+        List<Book> books = new ArrayList<>();
+        String sql = "SELECT * FROM books WHERE category_id = ?";
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, categoryId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    books.add(mapRow(rs));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Błąd podczas wyszukiwania: " + e.getMessage());
+        }
+        return books;
+    }
+
+    @Override
     public Book findById(int id) {
         String sql = "SELECT * FROM books WHERE id = ?";
         try (Connection conn = DatabaseConfig.getConnection();
