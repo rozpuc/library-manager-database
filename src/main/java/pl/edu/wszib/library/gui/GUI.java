@@ -53,7 +53,7 @@ public class GUI {
         String isbn = scanner.nextLine();
         System.out.print("Rok wydania: ");
         int releaseYear = Integer.parseInt(scanner.nextLine());
-        return new Book(0, title, author, isbn, releaseYear, false);
+        return new Book(0, title, author, isbn, releaseYear, false, null);
     }
 
     public int readBookId() {
@@ -78,7 +78,8 @@ public class GUI {
                 author.isEmpty() ? existing.getAuthor() : author,
                 isbn.isEmpty() ? existing.getIsbn() : isbn,
                 yearInput.isEmpty() ? existing.getReleaseYear() : Integer.parseInt(yearInput),
-                existing.isRent()
+                existing.isRent(),
+                existing.getCategoryId()
         );
     }
 

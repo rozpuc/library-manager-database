@@ -3,8 +3,8 @@ package pl.edu.wszib.library;
 import pl.edu.wszib.library.authentication.Authenticator;
 import pl.edu.wszib.library.config.DatabaseInitializer;
 import pl.edu.wszib.library.database.BookRepository;
-import pl.edu.wszib.library.database.InMemoryBookRepository;
-import pl.edu.wszib.library.database.InMemoryUserRepository;
+import pl.edu.wszib.library.database.JdbcBookRepository;
+import pl.edu.wszib.library.database.JdbcUserRepository;
 import pl.edu.wszib.library.database.UserRepository;
 import pl.edu.wszib.library.exceptions.BookNotFoundException;
 import pl.edu.wszib.library.gui.GUI;
@@ -16,8 +16,9 @@ public class App {
 
     public static void main(String[] args) {
         DatabaseInitializer.initialize();
-        UserRepository userRepository = new InMemoryUserRepository();
-        BookRepository bookRepository = new InMemoryBookRepository();
+
+        UserRepository userRepository = new JdbcUserRepository();
+        BookRepository bookRepository = new JdbcBookRepository();
         Authenticator authenticator = new Authenticator(userRepository);
         GUI gui = new GUI();
 

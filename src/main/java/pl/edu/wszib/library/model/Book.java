@@ -14,6 +14,7 @@ public class Book {
     private String isbn;
     private int releaseYear;
     private boolean rent;
+    private Integer categoryId;
 
     @Override
     public String toString() {
