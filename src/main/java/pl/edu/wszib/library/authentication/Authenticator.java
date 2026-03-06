@@ -1,6 +1,6 @@
 package pl.edu.wszib.library.authentication;
 
-import org.mindrot.jbcrypt.BCrypt;
+import org.apache.commons.codec.digest.DigestUtils;
 import pl.edu.wszib.library.database.UserRepository;
 import pl.edu.wszib.library.model.User;
 
@@ -14,7 +14,7 @@ public class Authenticator {
 
     public User authenticate(String username, String password) {
         User user = userRepository.findByUsername(username);
-        if (user != null && BCrypt.checkpw(password, user.getPassword())) {
+        if (user != null && user.getPassword().equals(DigestUtils.md5Hex(password))) {
             return user;
         }
         return null;

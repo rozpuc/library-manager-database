@@ -1,6 +1,6 @@
 package pl.edu.wszib.library.config;
 
-import org.mindrot.jbcrypt.BCrypt;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -73,9 +73,9 @@ public class DatabaseInitializer {
             return;
         }
 
-        String adminPassword = BCrypt.hashpw("admin123", BCrypt.gensalt());
-        String userPassword = BCrypt.hashpw("user123", BCrypt.gensalt());
-        String user2Password = BCrypt.hashpw("user2123", BCrypt.gensalt());
+        String adminPassword = DigestUtils.md5Hex("admin123");
+        String userPassword = DigestUtils.md5Hex("user123");
+        String user2Password = DigestUtils.md5Hex("user2123");
 
         stmt.execute(String.format("""
             INSERT INTO users (username, password, role) VALUES

@@ -1,10 +1,9 @@
 -- Dane początkowe dla Library Manager Database
 
--- Użytkownicy (hasła zostaną zahashowane przez aplikację)
--- admin/admin123, user/user123
 INSERT INTO users (username, password, role) VALUES
-('admin', '$2a$10$placeholder_admin_hash', 'ADMIN'),
-('user', '$2a$10$placeholder_user_hash', 'USER');
+('admin', '0192023a7bbd73250516f069df18b500', 'ADMIN'),
+('user', '6ad14ba9986e3615423dfca256d04e3f', 'USER'),
+('user2', 'b2adfbf49b5a8facf2ac499630ea96bd', 'USER');
 
 -- Kategorie książek
 INSERT INTO categories (name) VALUES
