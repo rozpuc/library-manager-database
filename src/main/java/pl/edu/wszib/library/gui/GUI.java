@@ -41,7 +41,8 @@ public class GUI {
         System.out.println("3. Usuń książkę");
         System.out.println("4. Edytuj książkę");
         System.out.println("5. Zarządzaj kategoriami");
-        System.out.println("6. Wyloguj");
+        System.out.println("6. Statystyki");
+        System.out.println("7. Wyloguj");
         System.out.print("Wybierz opcje: ");
         return scanner.nextLine();
     }
@@ -154,5 +155,26 @@ public class GUI {
     public int readCategoryId() {
         System.out.print("Podaj ID kategorii: ");
         return Integer.parseInt(scanner.nextLine());
+    }
+
+    public void displayStatistics(int totalBooks, int borrowedBooks, List<String> popularBooks, List<String> activeUsers) {
+        System.out.println("\nSTATYSTYKI BIBLIOTEKI ");
+        System.out.println("Wszystkich książek: " + totalBooks);
+        System.out.println("Wypożyczone: " + borrowedBooks);
+        System.out.println("Dostępne: " + (totalBooks - borrowedBooks));
+
+        System.out.println("\nNajpopularniejsze książki:");
+        if (popularBooks.isEmpty()) {
+            System.out.println("Brak danych.");
+        } else {
+            popularBooks.forEach(System.out::println);
+        }
+
+        System.out.println("\nAktywni użytkownicy:");
+        if (activeUsers.isEmpty()) {
+            System.out.println("Brak aktywnych wypożyczeń.");
+        } else {
+            activeUsers.forEach(System.out::println);
+        }
     }
 }

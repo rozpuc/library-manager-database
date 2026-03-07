@@ -8,7 +8,9 @@ import pl.edu.wszib.library.database.CategoryRepository;
 import pl.edu.wszib.library.database.JdbcBookRepository;
 import pl.edu.wszib.library.database.JdbcBorrowingRepository;
 import pl.edu.wszib.library.database.JdbcCategoryRepository;
+import pl.edu.wszib.library.database.JdbcStatisticsRepository;
 import pl.edu.wszib.library.database.JdbcUserRepository;
+import pl.edu.wszib.library.database.StatisticsRepository;
 import pl.edu.wszib.library.database.UserRepository;
 import pl.edu.wszib.library.exceptions.BookNotFoundException;
 import pl.edu.wszib.library.gui.GUI;
@@ -26,6 +28,7 @@ public class App {
         BookRepository bookRepository = new JdbcBookRepository();
         BorrowingRepository borrowingRepository = new JdbcBorrowingRepository();
         CategoryRepository categoryRepository = new JdbcCategoryRepository();
+        StatisticsRepository statisticsRepository = new JdbcStatisticsRepository();
         Authenticator authenticator = new Authenticator(userRepository);
         GUI gui = new GUI();
 
@@ -42,7 +45,7 @@ public class App {
         gui.showMessage("Zalogowano jako: " + loggedUser.getUsername() + " [" + loggedUser.getRole() + "]");
 
         if (loggedUser.getRole() == Role.ADMIN) {
-            runAdminMenu(gui, bookRepository, categoryRepository);
+            runAdminMenu(gui, bookRepository, categoryRepository, statisticsRepository);
         } else {
             runUserMenu(gui, bookRepository, borrowingRepository, categoryRepository, loggedUser);
         }
@@ -111,7 +114,8 @@ public class App {
     }
 
     private static void runAdminMenu(GUI gui, BookRepository bookRepository,
-                                     CategoryRepository categoryRepository) {
+                                     CategoryRepository categoryRepository,
+                                     StatisticsRepository statisticsRepository) {
         boolean running = true;
         while (running) {
             String choice = gui.showAdminMenuAndReadChoice();
@@ -154,6 +158,14 @@ public class App {
                     runCategoryMenu(gui, categoryRepository);
                     break;
                 case "6":
+                    gui.displayStatistics(
+                            statisticsRepository.getTotalBooks(),
+                            statisticsRepository.getBorrowedBooksCount(),
+                            statisticsRepository.getMostPopularBooks(5),
+                            statisticsRepository.getActiveUsers()
+                    );
+                    break;
+                case "7":
                     running = false;
                     break;
                 default:
